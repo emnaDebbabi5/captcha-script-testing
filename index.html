@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    
+ <title>ButtonCaptcha Example</title>
+ <link rel="stylesheet" href="http://captcha.abla.io/captcha-style.css">  
+ <script src="http://captcha.abla.io/captcha-script.js"></script>  
+
+ </head>
+ <body>
+<!-- The content of your HTML body -->
+
+<div  id="abcaptcha" data-sitekey="75NW5XJB00YEKWAYUQXCK7TN"></div>  
+<button onclick="handleS()">connexion</button>
+<script>
+    function handleS() {
+      // Send the captcha response to the server
+      var siteKey = document.getElementById("abcaptcha").dataset.sitekey;
+      var url = "http://195.154.71.218:8000/captcha/response";
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          site: siteKey,
+        }),
+      })
+        .then(function (response) {
+          // Handle the server response
+          if (response.ok) {
+            console.log("***",siteKey);
+            return response.text(); // Get the response as text
+          } else {
+            throw new Error("Captcha verification failed");
+          }
+        })
+        .then(function (data) {
+          // Print the response
+          console.log(data);
+        })
+        .catch(function (error) {
+          console.error(error);
+          // Handle error case
+        });
+    }
+  </script>
+
+ </body>
+</html>
